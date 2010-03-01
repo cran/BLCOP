@@ -10,21 +10,22 @@
 
 densityPlots <- function(result, assetsSel = NULL, numSimulations = BLCOPOptions("numSimulations"), ...)
 {
-    invisible(NULL)
+    stop("Not implemented for this class")
 }
 
 setGeneric("densityPlots")
 
 densityPlots.COPViews <- function(result, assetsSel = seq(along = result@views@assets) , numSimulations = BLCOPOptions("numSimulations") ,...) 
 {
-    marketSims <- sampleFrom(result@marketDist, numSimulations)[,assetsSel,drop=FALSE]
-    
+    marketSims <- sampleFrom(result@marketDist, numSimulations)[,drop=FALSE]
+    colnames(marketSims) <- assetSet(result@views)
     for(i in seq(along = assetsSel))
     {
-        plot(density(result@posteriorSims[,assetsSel[i]]), col = "blue", xlab = result@views@assets[assetsSel[i]], 
+        sims <- tail(result@posteriorSims[, assetsSel[i]], numSimulations)
+		plot(density(sims), col = "blue", xlab = result@views@assets[assetsSel[i]], 
             main = "Kernel density estimates of posterior and prior", ...)
-        lines(density(marketSims[,i]), col = "black", ...)
-        abline(v = mean(result@posteriorSims[,assetsSel[i]]), lty = 2, col = "blue")
+        lines(density(marketSims[,assetsSel[i]]), col = "black", ...)
+        abline(v = mean(sims, lty = 2, col = "blue"))
         abline(v = mean(marketSims[,i]), lty = 2, col = "black")
     }
     legend(x = "topright", legend = c("Posterior", "Prior"), lty = c(1,1), col = c("blue", "black"))
@@ -61,11 +62,32 @@ densityPlots.BLResult <- function(result, assetsSel = seq(along = assetSet(resul
 
             lines(x, dnorm(x, mean = priorMean, sd = priorStDev), col = "black", type = "l",...)
             abline(v = priorMean, lty = 2, col = "black")        
-            legend(x = "topright", legend = c("Prior", "Posterior"), lty = c(1,1), col = c("black", "blue"))
-            
+            legend(x = "topright", legend = c("Prior", "Posterior"), lty = c(1,1), col = c("black", "blue"))   
         }
     }      
-
 }
 
 setMethod("densityPlots", signature(result = "BLResult"), densityPlots.BLResult)
+
+
+biDensityPlots <- function(result, assetsSel , numSimulations = BLCOPOptions("numSimulations"), nBins,
+		...)
+{
+	.assertClass(result, "COPResult")
+	stopifnot(length(assetsSel) == 2)
+	marketSims <- sampleFrom(result@marketDist, numSimulations) 
+	colnames(marketSims) <- assetSet(result@views)
+	
+	marketSims <- marketSims[,assetsSel,drop=FALSE]
+	
+	sims <- tail(result@posteriorSims, numSimulations)[,assetsSel]
+	
+	hexBin <- hexBinning(sims, bin = nBins)
+	
+	par(mfrow = c(1,2))
+	plot(hexBin,  xlab = assetsSel[1], ylab = assetsSel[2], main = "Posterior", col = rev(greyPalette(nBins)))
+	
+	hexBin <- hexBinning(marketSims, bin = nBins)
+	plot(hexBin, xlab = assetsSel[1], ylab = assetsSel[2], main = "Prior", col = seqPalette(nBins))
+	
+}

@@ -15,7 +15,7 @@ show.BLViews <- function(object)
     }
     viewStrings <- apply(viewMatrix(object),1,.innerViewString)
     for(i in seq(along  = viewStrings))
-        cat(i, ":", viewStrings[i], ". Confidence:", object@confidences[i], "\n")
+        cat(i, ":", viewStrings[i], " + eps. Confidence:", object@confidences[i], " \n")
 }
 
 show.BLResult <- function(object)
@@ -26,6 +26,16 @@ show.BLResult <- function(object)
     show(object@posteriorMean)
     cat("Posterior covariance:\n")
     show(object@posteriorCovar)
+}
+
+show.COPResult <- function(object)
+{
+
+	cat(paste("Asset set: ", paste(assetSet(priorViews(object)), collapse = ","), "\n"))
+	cat("Views used to generate this posterior: \n")
+	show(priorViews(object))
+	cat("Number of simulations:", numSimulations(object), "\n" )
+	
 }
 
 show.COPViews <- function(object)
@@ -44,3 +54,4 @@ show.COPViews <- function(object)
 setMethod("show", signature(object = "BLViews"), show.BLViews)
 setMethod("show", signature(object = "BLResult"), show.BLResult)
 setMethod("show", signature(object = "COPViews"), show.COPViews)
+setMethod("show", signature(object = "COPResult"), show.COPResult)

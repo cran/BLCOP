@@ -2,8 +2,13 @@
 \docType{class}
 \alias{COPResult-class}
 \alias{densityPlots,COPResult-method}
+\alias{show,COPResult-method}
+\alias{show.COPResult}
 % \alias{probDistance,COPResult-method}
 \alias{densityPlots.COPResult}
+\alias{optimalPortfolios.fPort.COP}
+\alias{optimalPortfolios.fPort,COPResult-method}
+
 
 \title{Class "COPResult"}
 \description{A class that holds the posterior distribution produced with the COP framework}
@@ -21,16 +26,16 @@ they are created by the function \code{\link{COPPosterior}}
 \section{Methods}{
   \describe{
     \item{densityPlots}{\code{signature(result = "COPResult")}: Generates density plots of the marginal prior and posterior distributions of each asset.}
-    \item{probDistance}{\code{signature(result = "COPResult")}: Not yet finished}
-	 }
+    \item{show}{\code{signature(result = "COPResult")}: Displays basic information about the posterior results}
+   % \item{probDistance}{\code{signature(result = "COPResult")}: Not yet finished}
+%	 }
+	\item{optimalPortfolios.fPort}{\code{signature(result = "COPResult")}: Generates optimal prior and posterior portfolios using \code{fPortfolio} package routines }
+	}
 }
-
 \author{Francisco Gochez <fgochez@mango-solutions.com>}
 
 \seealso{
     \code{\link{COPPosterior}}, \code{\link{BLResult-class}}
 }
-\examples{
 
-}
 \keyword{classes}

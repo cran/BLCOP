@@ -1,17 +1,31 @@
 ###############################################################################
-# Mango Solutions, Chippenham SN14 0SQ 2008
+# Mango Solutions
 # posteriorEst
 # Author: Francisco
+# $Rev: 4763 $
+# $LastChangedDate: 2010-02-23 20:32:39 +0000 (Tue, 23 Feb 2010) $
+#
 ###############################################################################
 # DESCRIPTION: Computes the Black-Litterman posterior estimate 
 # KEYWORDS: math
 ###############################################################################
 
+#' This function performs the "core" calculation of the Black-Litterman model.  
+#' @param views An object of class BLViews
+#' @param mu A vector of mean equilibrium returns 
+#' @param tau The "tau" parameter in the Black-Litterman model.
+#' @param sigma The variance-covariance matrix of the returns of the assets
+#' @param kappa if greater than 0, the confidences in each view are replaced.  See the online help for details
+#' @return An object of class BLResult holding the updated Black-Litterman posterior
+#' @author Francisco
+#' @export
+
 posteriorEst <- function
 (
     views,     # full BLview object.  
-    tau,       # Degree of uncertainty in prior
-    alphas,    # Equilibrium expected returns
+	mu,    # Equilibrium expected returns
+	tau = 0.5,       # Degree of uncertainty in prior
+    
     sigma,     # variance-covariance matrix of asset returns
     kappa = 0  # if greater than 0, the view confidences will be ignored and the
                # omega matrix in the BL model will be replaced by kappa * P %*% sigma %*% t(P)
@@ -24,7 +38,6 @@ posteriorEst <- function
   P <- views@P
   if(kappa == 0)
   {    
-      P <- views@P
       if(length(views@confidences) > 1) 
         omega <- diag( 1/ views@confidences) 
       else 
@@ -33,7 +46,7 @@ posteriorEst <- function
   
   else    
   {
-      omega <- kappa * tcrossprod(views@P %*% sigma, views@P)
+      omega <- kappa * tcrossprod(P %*% sigma, P)
       omegaInv <- solve(omega)
   }     
 
@@ -44,26 +57,29 @@ posteriorEst <- function
   
   temp <- tcrossprod(sigma, P)
  
-  postMu <- alphas + tau * temp %*% solve(tau * P %*% temp + omega, qv - P %*% alphas)
+  postMu <- mu + tau * temp %*% solve(tau * P %*% temp + omega, qv - P %*% mu)
   postMu <- as.numeric(postMu)
   
   postSigma <- (1 + tau) * sigma - tau^2 * temp %*% solve(tau * P %*% temp + omega, P %*% sigma)
-  names(alphas) <- assetSet(views)
+  names(mu) <- assetSet(views)
   names(postMu) <- assetSet(views)
   
-  new("BLResult", views = views, tau = tau, priorMean = alphas, priorCovar = sigma,
+  new("BLResult", views = views, tau = tau, priorMean = mu, priorCovar = sigma,
                posteriorMean = postMu, posteriorCovar = postSigma, kappa = kappa )
 }
 
-###############################################################################
-# Mango Solutions, Chippenham SN14 0SQ 2008
-# posteriorEst
-# Author: Francisco
-###############################################################################
-# DESCRIPTION: wrapper function to facilitate Black-Litterman calculations. prevents users from having to manually compute alphas 
-# and variance-covariance matrix manually
-# KEYWORDS: datagen
-###############################################################################
+#' 
+#' @param returns A matrix of time series of returns.  The columns should correspond to individual assets.
+#' @param views An object of class BLViews
+#' @param tau The "tau" parameter in the Black-Litterman model.
+#' @param marketIndex A set of returns of a market index.
+#' @param riskFree A time series of risk-free rates of return.  Defaults to 0
+#' @param kappa if greater than 0, the confidences in each view are replaced.  See the online help for details  
+#' @param covEstimator A string holding the name of the function that should be used to estimate the variance-covariance matrix.
+#'     This function should simply return a matrix.
+#' @return An object of class BLResult
+#' @author Francisco
+#' @export
 
 BLPosterior <- function
 (
@@ -72,13 +88,13 @@ BLPosterior <- function
   tau = 1,         
   marketIndex,
   riskFree = NULL,
-  kappa = 0
+  kappa = 0,
+  covEstimator = "cov"
 )
 {
-  # TODO: Replace this so that there is no longer a dependency on fAssets
+  covEstimator <- match.fun(covEstimator)
   alphaInfo <- CAPMList(returns, marketIndex, riskFree = riskFree)
-
-  post <- posteriorEst(views, tau = tau, alphas = alphaInfo[["alphas"]], 
-      sigma = unclass(cov.shrink(returns)),  kappa = kappa)
+  post <- posteriorEst(views, tau = tau, mu = alphaInfo[["alphas"]], 
+      sigma = unclass(covEstimator(returns)),  kappa = kappa)
   post
 }

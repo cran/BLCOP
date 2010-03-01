@@ -4,6 +4,8 @@
 \alias{densityPlots,BLResult-method}
 \alias{show,BLResult-method}
 \alias{densityPlots.BLResult}
+\alias{optimalPortfolios.fPort.BL}
+\alias{optimalPortfolios.fPort,BLResult-method}
 
 \title{Class "BLResult": posterior of a market distribution in the Black-Litterman sense }
 \description{This class holds the posterior market mean and variance-covariance matrix calculated from some prior and set of views.  The original views are also returned.}
@@ -18,7 +20,7 @@
     \item{\code{priorCovar}:}{Object of class \code{"matrix"}: prior of the variance-covariance}
     \item{\code{posteriorMean}:}{Object of class \code{"numeric"}:  posterior mean}
     \item{\code{posteriorCovar}:}{Object of class \code{"matrix"}: posterior variance-covariance}
-    \item{\code{confIgnored}:}{Object of class \code{"logical"}: logical flag indicating whether or not confidences-in-views
+    \item{\code{kappa}:}{Object of class \code{"logical"}: logical flag indicating whether or not confidences-in-views
     were ignored.}
   }
 }
@@ -26,11 +28,9 @@
   \describe{
     \item{denityPlots}{\code{signature(result = "BLResult")}: Plots the marginal distributions of the asset returns under the prior and posterior distributions}
     \item{show}{\code{signature(object = "BLResult")}: Displays the contents of a result}
-	 }
+	\item{optimalPortfolios.fPort}{\code{signature(result = "BLResult")}: Generates optimal prior and posterior portfolios using \code{fPortfolio} package routines}
+	}
 }
 \author{Francisco Gochez}
 
-\examples{
-
-}
 \keyword{classes}

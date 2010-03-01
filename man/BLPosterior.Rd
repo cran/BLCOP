@@ -9,8 +9,8 @@
     
 }
 \usage{
-BLPosterior(returns, views, tau = 1, marketIndex, riskFree = NULL, kappa = 0)
-posteriorEst(views, tau, alphas, sigma, kappa = 0)
+BLPosterior(returns, views, tau = 1, marketIndex, riskFree = NULL, kappa = 0, covEstimator = "cov")
+posteriorEst(views, mu, tau = 0.5, sigma, kappa = 0)
 
 }
 
@@ -20,18 +20,20 @@ posteriorEst(views, tau, alphas, sigma, kappa = 0)
   \item{tau}{The "tau" parameter in the Black-Litterman model.}
   \item{marketIndex}{A set of returns of a market index.}
   \item{riskFree}{A time series of risk-free rates of return.  Defaults to 0} 
-  \item{alphas}{A vector of mean equilibrium returns}
+  \item{mu}{A vector of mean equilibrium returns}
   \item{sigma}{The variance-covariance matrix of the returns of the assets}
   \item{kappa}{If greater than 0, the confidences in each view are replaced.  See the details section
       for more information}
+  \item{covEstimator}{A string holding the name of the function that should be used to estimate the variance-covariance matrix.
+    This function should simply return a matrix.}
 }
 \details{
     Some authors have suggested that the confidences should not be set by the analyst but rather should just be equal
     to kappa * t(P) \%*\% Sigma \%*\% P.  Setting kappa > 0 will cause this to happen.  In BLPosterior, the equilibrium return
-    means are computed with \code{\link{CAPMList}}, while the variance-covariance matrix is calculated with \code{cov.shrink} from the \code{corpcor}.
+    means are computed with \code{\link{CAPMList}}.
 }
 \value{
-    An object of class BLResults
+    An object of class BLResult
 }
 
 \author{Francisco Gochez <fgochez@mango-solutions.com>}
@@ -53,7 +55,7 @@ x <- c(0.001005,0.001328,-0.000579,-0.000675,0.000121,0.000128,-0.000445,-0.0004
     pick[1,7] <- 1
     pick[2,1] <- -1; pick[2,2] <- 1
     pick[3, 3:6] <- c(0.9, -0.9, .1, -.1)
-    confidences <- 1 / c(0.00709, 0.000141, 0.000866)
+    confidences <- 1 / c(0.000709, 0.000141, 0.000866)
     myViews <- BLViews(pick, c(0.0525, 0.0025, 0.02), confidences, letters[1:8])
     myPosterior <- posteriorEst(myViews, tau = 0.025, mu, varCov )
     myPosterior
