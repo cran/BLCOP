@@ -1,4 +1,4 @@
-  .BLEnv <- new.env()
+.BLEnv <- new.env()
 .onLoad <- function(libname, pkgname)
 {
 

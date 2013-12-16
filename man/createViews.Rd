@@ -9,9 +9,11 @@
 }
 
 \usage{
-createBLViews(allAssets, numAssetViews = 1, assetSubset = NULL, mode = c("editor", "Window"))
+createBLViews(allAssets, numAssetViews = 1, assetSubset = NULL, 
+              mode = c("editor", "Window"))
 updateBLViews(views, includeNullViews = FALSE, numNewViews = 0, assets = NULL)
-createCOPViews (allAssets, numAssetViews = 1, assetSubset = NULL, mode = c("editor", "Window")) 
+createCOPViews (allAssets, numAssetViews = 1, assetSubset = NULL, 
+                mode = c("editor", "Window")) 
 
 }
 

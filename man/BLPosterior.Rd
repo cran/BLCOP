@@ -9,7 +9,8 @@
     
 }
 \usage{
-BLPosterior(returns, views, tau = 1, marketIndex, riskFree = NULL, kappa = 0, covEstimator = "cov")
+BLPosterior(returns, views, tau = 1, marketIndex, riskFree = NULL, 
+            kappa = 0, covEstimator = "cov")
 posteriorEst(views, mu, tau = 0.5, sigma, kappa = 0)
 
 }

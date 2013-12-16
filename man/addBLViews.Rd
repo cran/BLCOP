@@ -38,7 +38,8 @@ newPMatrix(assetNames, numViews, defaultValue = 0)
 \author{Francisco Gochez}
 \seealso{\code{\link{createBLViews}}, \code{\link{updateBLViews}}}
 \examples{
-    ### example from Thomas M. Idzorek's paper "A STEP-BY-STEP GUIDE TO THE BLACK-LITTERMAN MODEL"
+    ### example from T. M. Idzorek's paper "A STEP-BY-STEP GUIDE TO THE 
+	### BLACK-LITTERMAN MODEL"
  	\dontrun{
 	    pick <- newPMatrix(letters[1:8], 3)
 	    pick[1,7] <- 1
@@ -49,7 +50,8 @@ newPMatrix(assetNames, numViews, defaultValue = 0)
 	    myViews <- BLViews(pick, q = c(0.0525, 0.0025, 0.02), confidences, letters[1:8])
 	    myViews
 	    
-	    ### Modified COP example from Meucci's "Beyond Black-Litterman: Views on non-normal markets" 
+	    ### Modified COP example from Meucci's "Beyond Black-Litterman: Views on
+		### non-normal markets" 
 	    dispersion <- c(.376,.253,.360,.333,.360,.600,.397,.396,.578,.775) / 1000
 	    sigma <- BLCOP:::.symmetricMatrix(dispersion, dim = 4)
 	    caps <- rep(1/4, 4)

@@ -68,7 +68,7 @@ posteriorEst <- function
                posteriorMean = postMu, posteriorCovar = postSigma, kappa = kappa )
 }
 
-#' 
+#' BLposterior
 #' @param returns A matrix of time series of returns.  The columns should correspond to individual assets.
 #' @param views An object of class BLViews
 #' @param tau The "tau" parameter in the Black-Litterman model.

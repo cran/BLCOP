@@ -11,9 +11,11 @@
   
 }
 \usage{
-optimalPortfolios(result, optimizer = .optimalWeights.simpleMV, ..., doPlot = TRUE, beside = TRUE)
-optimalPortfolios.fPort(result, spec = NULL, constraints = "LongOnly", optimizer = "minriskPortfolio", 
-    inputData = NULL, numSimulations = BLCOPOptions("numSimulations")) 
+optimalPortfolios(result, optimizer = .optimalWeights.simpleMV, ..., doPlot = TRUE, 
+                  beside = TRUE)
+optimalPortfolios.fPort(result, spec = NULL, constraints = "LongOnly", 
+                        optimizer = "minriskPortfolio", inputData = NULL, 
+                        numSimulations = BLCOPOptions("numSimulations")) 
 }
 
 \arguments{
@@ -53,14 +55,16 @@ optimalPortfolios.fPort(result, spec = NULL, constraints = "LongOnly", optimizer
 \references{Wuertz, D., Chalabi, Y., Chen W., Ellis A. (2009); Portfolio Optimization with R/Rmetrics, Rmetrics eBook, Rmetrics Association and Finance Online, Zurich. }
 \examples{
 	\dontrun{
-	    entries <- c(0.001005,0.001328,-0.000579,-0.000675,0.000121,0.000128,-0.000445,-0.000437 ,
-	     0.001328,0.007277,-0.001307,-0.000610,-0.002237,-0.000989,0.001442,-0.001535 ,
-	     -0.000579,-0.001307,0.059852,0.027588,0.063497,0.023036,0.032967,0.048039 ,
-	    -0.000675,-0.000610,0.027588,0.029609,0.026572,0.021465,0.020697,0.029854 ,
-	     0.000121,-0.002237,0.063497,0.026572,0.102488,0.042744,0.039943,0.065994 ,
-	     0.000128,-0.000989,0.023036,0.021465,0.042744,0.032056,0.019881,0.032235 ,
-	    -0.000445,0.001442,0.032967,0.020697,0.039943,0.019881,0.028355,0.035064 ,
-	    -0.000437,-0.001535,0.048039,0.029854,0.065994,0.032235,0.035064,0.079958 )
+	    entries <- c(0.001005,0.001328,-0.000579,-0.000675,0.000121,0.000128,
+                    -0.000445, -0.000437, 0.001328,0.007277,-0.001307,-0.000610,
+                    -0.002237,-0.000989,0.001442,-0.001535, -0.000579,-0.001307,
+                    0.059852,0.027588,0.063497,0.023036,0.032967,0.048039,-0.000675,
+                    -0.000610,0.027588,0.029609,0.026572,0.021465,0.020697,0.029854,
+                    0.000121,-0.002237,0.063497,0.026572,0.102488,0.042744,0.039943,
+                    0.065994 ,0.000128,-0.000989,0.023036,0.021465,0.042744,0.032056,
+                    0.019881,0.032235 ,-0.000445,0.001442,0.032967,0.020697,0.039943,
+                    0.019881,0.028355,0.035064 ,-0.000437,-0.001535,0.048039,0.029854,
+                    0.065994,0.032235,0.035064,0.079958 )
 	    
 	    varcov <- matrix(entries, ncol = 8, nrow = 8)
 	    mu <- c(0.08, 0.67,6.41, 4.08, 7.43, 3.70, 4.80, 6.60) / 100
@@ -89,8 +93,8 @@ optimalPortfolios.fPort(result, spec = NULL, constraints = "LongOnly", optimizer
         views <- COPViews(pick, vdist, 0.2, c("SP", "FTSE", "CAC", "DAX"))
         posterior <- COPPosterior(marketDistribution, views)
     
-        optimalPortfolios.fPort(myPosterior, spec = NULL, optimizer = "minriskPortfolio", inputData = NULL, 
-			numSimulations  = 100	)
+        optimalPortfolios.fPort(myPosterior, spec = NULL, optimizer = "minriskPortfolio", 
+		                        inputData = NULL, numSimulations  = 100	)
 	
     }
 }

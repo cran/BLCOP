@@ -1,10 +1,5 @@
 .optimalWeights.simpleMV <- function(mu, sigma, constraints=NULL, tol = 1e-6)
 {
-	if(!require("quadprog", quiet = TRUE))
-	{
-		stop("This function depends on quadprog, which is not available")
-	}
-	
 	if(is.null(constraints))        
 	{    
 		numAssets <- length(mu)
@@ -77,6 +72,8 @@ optimalPortfolios <- function
 #' @param spec An object of class fPORTFOLIOSPEC containing the portfolio specification
 #' @param constraints A set of portfolio constraints (as required by fPortfolio optimization routines)
 #' @param optimizer Function (or name of a function) that performs portfolio optimization, e.g. "minriskPortfolio"
+#' @param inputData Input data
+#' @param numSimulations Number of simultions
 #' @title Calculate optimal prior and posterior portfolios using fPortfolios
 #' @return A list with 2 elements: the prior and posterior portfolios (of class fPORTFOLIO)
 #' @author fgochez
@@ -107,44 +104,65 @@ optimalPortfolios.fPort.BL <- function(result, spec = NULL ,constraints = "LongO
 		# setWeights(spec) <- rep(1 / numAssets, times = numAssets)
 		 #setSolver(spec) <- "solveRquadprog"
 	}
-	
-	priorSpec <- spec
-	
-	.priorEstim <- function(...)
-	{
-		list(mu = result@priorMean, Sigma = result@priorCovar)
-	}
-	.posteriorEstim <- function(...)
-	{
-		# posterior mean and covariance estimates come from the BL calculations
-		postMeanCov <- posteriorMeanCov(result)
-		list(mu = postMeanCov$mean, Sigma = postMeanCov$covariance)
-	}
-	
-	# we must assign global estimator functions in order for the optimization routines to use them to extract
-	# the prior and posterior means and variances.  This code is not particularly elegant, but I know of no other way
-	# to do this at the moment
-	
-	if(exists(".priorEstim", envir = .GlobalEnv) | exists(".posteriorEstim", envir = .GlobalEnv))
-		stop("Unwilling to perform assignment of .priorEstim or .posteriorEstim because they already exist in the global environment.")
-	assign(".priorEstim", .priorEstim, envir = .GlobalEnv)
-	assign(".posteriorEstim", .posteriorEstim, envir = .GlobalEnv)
-	# delete these when the function terminates
-	on.exit({
-				rm(.posteriorEstim, envir = .GlobalEnv)
-				rm(.priorEstim, envir = .GlobalEnv)
-			})
-	setEstimator(priorSpec) <- ".priorEstim"
-	posteriorSpec <- spec
-	setEstimator(posteriorSpec) <- ".posteriorEstim"
-	optimizer <- match.fun(optimizer)
-	# calculate optimal portfolios
+  
+  # calculate prior and posterior mean and covariance. These are then stored in the scope of the
+  # package environment and then accessed via a wrapper function when called by the optimiser.
+  # This replaces the original code which stored value in the global environment and was therefore
+  # in breach of the CRAN policies.
+  
+  .BLEnv$prior <- list(mu = result@priorMean, Sigma = result@priorCovar)
+  
+	# posterior mean and covariance estimates come from the BL calculations
+	postMeanCov <- posteriorMeanCov(result)
+	.BLEnv$post <- list(mu = postMeanCov$mean, Sigma = postMeanCov$covariance)
+    
+ 	priorSpec <- spec
+ 	posteriorSpec <- spec
+  
+  setEstimator(priorSpec) <- "getPriorEstim"  
+	setEstimator(posteriorSpec) <- "getPosteriorEstim"
+  
+  optimizer <- match.fun(optimizer)
+
+  # calculate optimal portfolios
 	priorOptimPortfolio <- optimizer(dmySeries, priorSpec, constraints)	
 	posteriorOptimPortfolio <- optimizer(dmySeries, posteriorSpec, constraints)
-	
+  
+	.BLEnv$prior <- NULL
+	.BLEnv$post <-  NULL
+  
 	x <- list(priorOptimPortfolio = priorOptimPortfolio, posteriorOptimPortfolio = posteriorOptimPortfolio)
 	class(x) <- "BLOptimPortfolios"
 	x
+}
+
+#' A wrapper function which returns estimates of the prior mean and covariance calculated 
+#' stored in the package environment. It is not intended to be directly run by the user but 
+#' needs to be exported in order to be run by the third party optimizer.
+#' @param x multivariate time series
+#' @param spec optional portfolio specification
+#' @param ... additional arguments
+#' @return A list with 2 elements: the estimators of the prior mean and covariance
+#' @author rchandler-mant
+#' @export
+getPriorEstim <- function(x, spec=NULL, ...)
+{
+  return(.BLEnv$prior)
+}
+
+
+#' A wrapper function which returns estimates of the posterior mean and covariance calculated 
+#' stored in the package environment. It is not intended to be directly run by the user but 
+#' needs to be exported in order to be run by the third party optimizer.
+#' @param x multivariate time series
+#' @param spec optional portfolio specification
+#' @param ... additional arguments
+#' @return A list with 2 elements: the estimators of the posterior mean and covariance
+#' @author rchandler-mant
+#' @export
+getPosteriorEstim <- function(x, spec=NULL, ...)
+{
+  return(.BLEnv$post)
 }
 
 setMethod("optimalPortfolios.fPort", signature(result = "BLResult"), optimalPortfolios.fPort.BL )

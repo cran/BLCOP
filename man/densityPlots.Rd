@@ -6,7 +6,8 @@
     \code{COPResult} for comparative purposes.
 }
 \usage{
-densityPlots(result, assetsSel = NULL, numSimulations = BLCOPOptions("numSimulations"), ...)
+densityPlots(result, assetsSel = NULL, numSimulations = BLCOPOptions("numSimulations"), 
+             ...)
 }
 
 \arguments{

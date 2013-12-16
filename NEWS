@@ -1,3 +1,9 @@
+New in version 0.2.7:
+- No new functionality was added.  A vignettes directory was created to comply with build process 
+  under R 3.1.0 and above.
+- Several non functional changes were made to remove warnings from build process. These were mainly 
+  documentation related.
+
 New in version 0.2.6:
 - No new functionality was added.  The package has simply been updated to build correctly under R 2.13.0.
 

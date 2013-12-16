@@ -8,7 +8,7 @@ runBLCOPTests <- function(testPath = BLCOPOptions("unitTestPath"), protocolFile 
 	BLTestSuite <- defineTestSuite(name = "Black-Litterman / COP unit tests", dirs = testPath) 
     testResults <- runTestSuite(BLTestSuite)
     if(writeProtocol)
-		printHTMLProtocol(testResults, file = protocolFile)
+		printHTMLProtocol(testResults, fileName = protocolFile)
 	testResults
 }
 
@@ -17,14 +17,14 @@ runBLCOPTests <- function(testPath = BLCOPOptions("unitTestPath"), protocolFile 
 
 COPExample <- function(numSimulations = BLCOPOptions("numSimulations"))
 {
-	if(!require("sn", quiet = TRUE))
+	if(!require("sn", quietly = TRUE))
 	{
 		warning("This test relies on the sn package which is not available \n")
 		return()
 	}
 	NUMTESTSIMULATIONS <- 1000
 	dispersion <- c(.376,.253,.360,.333,.360,.600,.397,.396,.578,.775) / 1000
-	sigma <- BLCOP:::.symmetricMatrix(dispersion, dim = 4)
+	sigma <- .symmetricMatrix(dispersion, dim = 4)
 	caps <- rep(1/4, 4)
 	mu <- 2.5 * sigma %*% caps
 	dim(mu) <- NULL

@@ -6,7 +6,8 @@
     series of asset returns.  It is meant to be used for computing "prior" means for the Black-Litterman model.
 }
 \usage{
-CAPMList(returns, marketIndex, riskFree = NULL, regFunc = BLCOPOptions("regFunc"), coeffExtractFunc = NULL, ...)
+CAPMList(returns, marketIndex, riskFree = NULL, regFunc = BLCOPOptions("regFunc"), 
+         coeffExtractFunc = NULL, ...)
 }
 
 \arguments{

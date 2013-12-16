@@ -82,12 +82,12 @@ biDensityPlots <- function(result, assetsSel , numSimulations = BLCOPOptions("nu
 	
 	sims <- tail(result@posteriorSims, numSimulations)[,assetsSel]
 	
-	hexBin <- hexBinning(sims, bin = nBins)
+	hexBin <- hexBinning(sims, bins = nBins)
 	
 	par(mfrow = c(1,2))
 	plot(hexBin,  xlab = assetsSel[1], ylab = assetsSel[2], main = "Posterior", col = rev(greyPalette(nBins)))
 	
-	hexBin <- hexBinning(marketSims, bin = nBins)
+	hexBin <- hexBinning(marketSims, bins = nBins)
 	plot(hexBin, xlab = assetsSel[1], ylab = assetsSel[2], main = "Prior", col = seqPalette(nBins))
 	
 }
