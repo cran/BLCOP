@@ -1,3 +1,6 @@
+New in version 0.2.8:
+- No new functionality was added.  RUnit tests updated to correctly pass sn distribution parameters.
+
 New in version 0.2.7:
 - No new functionality was added.  A vignettes directory was created to comply with build process 
   under R 3.1.0 and above.

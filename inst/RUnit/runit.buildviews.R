@@ -61,7 +61,7 @@ test.addCOPViews <- function()
 		warning("The next tests require the sn package, which could not be loaded \n")
 		return()
 	}
-    viewDist2 <- list(distribution("sn", location = 0.05, scale = 10, shape = 0.001))
+    viewDist2 <- list(distribution("sn", xi = 0.05, omega = 10, alpha = 0.001))
     views1 <- addCOPViews(pick, viewDist2, 0.4, views1 )
     
     views2 <- COPViews(pickMatrix = matrix(0, ncol = 6, nrow = 3, dimnames = list(NULL, stocks)), 

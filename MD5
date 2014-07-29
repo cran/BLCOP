@@ -1,6 +1,6 @@
-f71ccd779c293caa21605cd0ee0b1119 *DESCRIPTION
-99eda4e95a43aed98450917bff4c111d *NAMESPACE
-dbec27d5d91c6a09d6fc387ce5c6123c *NEWS
+e8a7ecd37af5df60413c007856fbaeda *DESCRIPTION
+1b7e77d7d4814f1aa9e70a662912d501 *NAMESPACE
+a68095c5f98f750d8323140ef1087399 *NEWS
 c7ae487de99bdf3e81014ec4bc88e3c8 *R/BLAnalyzePost.r
 0d1844cbd27dc817e50f8ab886a9e843 *R/BLGUI.r
 13d51456e2a2f27d6f960898e5a38f27 *R/BLOptions.R
@@ -22,7 +22,7 @@ b09d1c4f0c1df3400f57bef5a20bf6db *R/portfolioopt.R
 8db0b17ac5558dc385b89b40383ebf46 *R/unittests.r
 6c47b11bbf0fde436d1e15b308160da3 *R/utils.R
 e83cee186e6ee894b37475d554f8b033 *R/zzz.r
-67824e9b9043f756f041c533fc71c3f0 *build/vignette.rds
+a4ca560bf0ff33ffe16108a07d399284 *build/vignette.rds
 85a7b75b3f45bb789d9c5072a9da5d52 *data/US13wTB.RData
 a8432aa266bd56f24f38dc6bc8155ae6 *data/monthlyreturns.RData
 0aea569c8f2f2599ed2138b78caccf94 *data/sp500Returns.RData
@@ -36,14 +36,15 @@ d9df7a82330995ee6eb4f366ad60274f *inst/RUnit/posteriorsims.RData
 03b7d46d50abf4217d9d431370a76a99 *inst/RUnit/runit.BLPosterior.R
 07ab33ae9ea8bac84997bf0b2166ce8a *inst/RUnit/runit.CAPM.R
 5dbbe17f1ebcbc898d77ac1a6045983e *inst/RUnit/runit.COPPosterior.r
-2b242aa2458952e488cb3d896132cea8 *inst/RUnit/runit.buildviews.R
+0d930279d8015ae865904c0e343ad89e *inst/RUnit/runit.buildviews.R
 d285a8ce7054fc61cf3c070c00cd22d7 *inst/RUnit/runit.deleteviews.r
 854863a79b2d8e5c07a99527e2614328 *inst/RUnit/runit.portfolioopt.R
 cbde5eb9ee9dd42722774762e6abba83 *inst/RUnit/runit.showmethods.R
 4d3f29665da708e1b2dd3731eb0cfcb8 *inst/RUnit/testseed.RData
 547ce0205938a55fb70065b2aaca03ec *inst/doc/BLCOP.R
 65bb4ca40199a5bb5b6ff956401308e4 *inst/doc/BLCOP.Rnw
-172330a2b9dcf8317f2c503d86621893 *inst/doc/BLCOP.pdf
+f1cf5fecf37c2310ab1eff8f86f266d1 *inst/doc/BLCOP.pdf
+821e22a5c193f9dc08d4fa2c475624e5 *inst/doc/BlackLitterman.pdf
 4b4fa27c90cbb090bbe76cb91aea7308 *man/BLCOPOptions.Rd
 f92a7ab9c15cbc10a6870b57a9f78021 *man/BLPosterior.Rd
 e74dedf4492fbeed436d373f2fbee2e1 *man/BLResult-class.Rd
