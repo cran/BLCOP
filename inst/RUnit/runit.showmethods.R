@@ -8,13 +8,12 @@
 
 test.show.COPPosterior <- function()
 {
-	x <- BLCOP:::COPExample()
+	x <- get(load( file.path(BLCOPOptions("unitTestPath"), "copexample.RData") ))
 	
-	checkEquals( capture.output(show(x$posterior)),  
-			c("Asset set:  SP,FTSE,CAC,DAX ", "Views used to generate this posterior: ", 
-			"[1] \"1*DAX~unif:(min=-0.02,max=0)\"", "Number of simulations: 1000 "
-	))
+	checkEquals(capture.output(show(x$posterior)),  
+			    c("Asset set:  SP,FTSE,CAC,DAX ", 
+				  "Views used to generate this posterior: ", 
+			      "[1] \"1*DAX~unif:(min=-0.02,max=0)\"", 
+				  "Number of simulations: 1000 "
+	             ))
 }
-
-
-

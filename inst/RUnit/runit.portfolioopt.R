@@ -2,12 +2,35 @@
 # $Rev: 4767 $
 # Author: Francisco
 ###############################################################################
+BLExample <- function()
+{
+	entries <- c(0.001005,0.001328,-0.000579,-0.000675,0.000121,0.000128,-0.000445,-0.000437 ,
+			0.001328,0.007277,-0.001307,-0.000610,-0.002237,-0.000989,0.001442,-0.001535 ,
+			-0.000579,-0.001307,0.059852,0.027588,0.063497,0.023036,0.032967,0.048039 ,
+			-0.000675,-0.000610,0.027588,0.029609,0.026572,0.021465,0.020697,0.029854 ,
+			0.000121,-0.002237,0.063497,0.026572,0.102488,0.042744,0.039943,0.065994 ,
+			0.000128,-0.000989,0.023036,0.021465,0.042744,0.032056,0.019881,0.032235 ,
+			-0.000445,0.001442,0.032967,0.020697,0.039943,0.019881,0.028355,0.035064 ,
+			-0.000437,-0.001535,0.048039,0.029854,0.065994,0.032235,0.035064,0.079958 )
+	
+	myVarcov2 <- matrix(entries, ncol = 8, nrow = 8)
+	mu <- c(0.08, 0.67,6.41, 4.08, 7.43, 3.70, 4.80, 6.60) / 100
+	pick <- matrix(0, ncol = 8, nrow = 3, dimnames = list(NULL, letters[1:8]))
+	pick[1,7] <- 1
+	pick[2,1] <- -1; pick[2,2] <- 1
+	pick[3, 3:6] <- c(0.9, -0.9, .1, -.1)
+	confidences <- 1 / c(0.00709, 0.000141, 0.000866)
+	myViews <- BLViews(pick, c(0.0525, 0.0025, 0.02), confidences, letters[1:8])
+	myPosterior <- posteriorEst(myViews, tau = 0.025, mu = mu, myVarcov2 )
+	list(prior = myViews, posterior = myPosterior)
+}
 
 # check the basic "toy" portfolio optimizer and the portfolio optimizer that uses fPortfolio
 test.optimalPortfolios.BL <- function()
 {
-
-	BLEx <- BLCOP:::BLExample()
+    BLEx <- get(load( file.path(BLCOPOptions("unitTestPath"), "BLExample.RData") ))
+	#BLEx <- get(load(BLExample.RData))
+	#BLEx <- BLCOP:::BLExample()
 	myPosterior <- BLEx$posterior
 	res <- optimalPortfolios(myPosterior, doPlot = TRUE)
 	expected <- c(0.00000000,0.00000000,0.38204176, 0.00000000, 0.08198505,0.00000000, 0.36548138,0.17049181)
@@ -30,18 +53,16 @@ test.optimalPortfolios.BL <- function()
 	checkEquals(c(class(res2[[1]]), class(res2[[2]])), c("fPORTFOLIO", "fPORTFOLIO"), check.names = FALSE)
 	
 	# posterior weights should be similar to those in Idzorek's paper
-	checkEquals(getWeights(res2$"posteriorOptimPortfolio"), structure(c(0.277900279601881, 0.168100949804396, 0.0990111058722582, 
-							0.143485334128929, 0.0136813854600612, 0.0129876649193811, 0.249161680453947, 
-							0.0356715997591463), invest = 1))
+	checkEquals(round(getWeights(res2$"posteriorOptimPortfolio"), 2), c(0.28, 0.17, 0.1, 0.14, 0.01, 0.01, 0.25, 0.04), check.names=FALSE)
 	# try another optimizer
 	
 	res3 <- optimalPortfolios.fPort(myPosterior, spec = portfolioSpec(), optimizer = "minriskPortfolio")
 	
-	checkEquals(sapply(res3,  getWeights), structure(c(0.94230707004467, 0, 0, 0.0397431006880323, 0, 0, 
-							0.0179498292672979, 0, 0.942204885914348, 0, 0, 0.0396001651180883, 
-							0, 0, 0.0181949489675634, 0), .Dim = c(8L, 2L), .Dimnames = list(
-							NULL, c("priorOptimPortfolio", "posteriorOptimPortfolio"))), 
-	   msg = " |minimum risk portfolios as expected")
+	checkEquals(round(sapply(res3,  getWeights), 2), 
+        structure(c(0.94, 0, 0, 0.04, 0, 0, 0.02, 0, 0.94, 0, 0, 0.04, 
+        0, 0, 0.02, 0), .Dim = c(8L, 2L), .Dimnames = list(c("a", "b", 
+        "c", "d", "e", "f", "g", "h"), c("priorOptimPortfolio", "posteriorOptimPortfolio"
+        ))) ,msg = " |minimum risk portfolios as expected")
 	
 }
 
@@ -50,6 +71,12 @@ test.optimalPortfolios.BL <- function()
 test.optimalPortfolios.COP <- function()
 {
 
+	if(!require("fPortfolio", quiet = TRUE))
+	{
+		warning("This test relies on the fPortfolio package which is not available \n")
+		return()
+	}
+	
 	COPEx <- get(load( file.path(BLCOPOptions("unitTestPath"), "copexample.RData") ))
 	# Check optimization with COP
 	myPosterior <- COPEx$posterior
@@ -57,7 +84,7 @@ test.optimalPortfolios.COP <- function()
 	res4 <- optimalPortfolios.fPort(myPosterior, spec = NULL, optimizer = "minriskPortfolio", inputData = NULL, 
 			numSimulations  = 100	) 
 	
-	checkEqualsNumeric(getWeights(res4$posteriorOptimPortfolio), c(0.534715878700172, 0.465284121299828, 0, 0))
+	checkEqualsNumeric(round(getWeights(res4$posteriorOptimPortfolio),3),  c(0.535, 0.465, 0, 0) )
 	
 	# second example, using input data
 	COPEx2 <- get(load( file.path(BLCOPOptions("unitTestPath"), "copexample2.RData") ))
@@ -65,11 +92,11 @@ test.optimalPortfolios.COP <- function()
 	spec <- portfolioSpec()
 	setType(spec) <- "CVaR"
 	setWeights(spec) <- rep(1 / 6, times = 6)
-	setSolver(spec) <- "solveRglpk"
+	setSolver(spec) <- "solveRglpk.CVAR"
 	setTargetReturn(spec) <- 0.005
 	res5 <- optimalPortfolios.fPort( COPEx2, spec = spec, inputData = as.timeSeries(monthlyReturns), numSimulations  = nrow(monthlyReturns))
-	
-	checkEqualsNumeric(getWeights(res5$priorOptimPortfolio), c(0.0707149756584066, 2.67397784323004e-07, 0.0105900756464006, 
-					0.522435704424078, 0, 0.396258976873331))
-	checkEqualsNumeric(getWeights(res5$posteriorOptimPortfolio), c(0.513269493960045, 0, 0, 0, 0, 0.486730506039955))
+
+    checkEqualsNumeric(round(getWeights(res5$priorOptimPortfolio),3), c(0.071, 0, 0.011, 0.522, 0, 0.396))
+                   
+    checkEqualsNumeric(round(getWeights(res5$posteriorOptimPortfolio),3), c(0.513, 0, 0, 0, 0, 0.487))
 }

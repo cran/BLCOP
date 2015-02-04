@@ -18,3 +18,10 @@ export(posteriorMeanCov, posteriorSimulations, numSimulations, priorViews)
 exportMethods(optimalPortfolios.fPort)
 export(getPriorEstim, getPosteriorEstim)
 import(MASS, methods, quadprog)
+
+importFrom(fMultivar, hexBinning)
+importFrom(fBasics, greyPalette, seqPalette)
+importFrom(timeSeries, as.timeSeries)
+importFrom(fPortfolio, portfolioSpec, 'setEstimator<-', 'setType<-', 'setWeights<-', 'setSolver<-', getWeights )
+importFrom(RUnit, defineTestSuite, runTestSuite, printHTMLProtocol)
+

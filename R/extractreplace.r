@@ -81,12 +81,8 @@ posteriorMeanCov <- function(posterior)
 
 
 
-#' Extracts the matrix of posterior simulations from a COPPosterior object
-#' @param posterior The object of class COPPosterior
-#' @return A matrix with named columns
-#' @author Francisco
-#' @export
-
+## Extracts the matrix of posterior simulations from a COPPosterior object.
+## Return A matrix with named columns.
 posteriorSimulations <- function(posterior)
 {
 	.assertClass(posterior, "COPResult")

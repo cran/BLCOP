@@ -19,6 +19,8 @@
 \newcommand{\rfun}[1]{\texttt{#1}}
 \newcommand{\packversion}{0.2.6}
 \begin{document}
+\SweaveOpts{concordance=TRUE}
+
 \title{Notes on the BLCOP Package}
 \author{Francisco Gochez, Mango Solutions}
 \maketitle
@@ -26,8 +28,8 @@
 % \VignetteIndexEntry{"Overview of the BLCOP package"}
 
 \section{Introduction}
-\paragraph{} The BLCOP package is an implementation of the Black-Litterman and copula opinion pooling frameworks.
-The current release (\packversion{}) should be considered as a beta version(any feedback would be greatly appreciated).  This vignette gives an overview of these two opinion-blending methods, briefly shows how they are implemented in this package, and closes with a short discussion of how the package may evolve in the future.
+\paragraph{}  The BLCOP package is an implementation of the Black-Litterman and copula opinion pooling frameworks.
+This vignette gives an overview of these two opinion-blending methods, briefly shows how they are implemented in this package, and closes with a short discussion of how the package may evolve in the future(any feedback would be greatly appreciated).
 %%%%%
 %
 % Overview
@@ -64,15 +66,17 @@ where
 We can then obtain the posterior distribution of the \textit{market} by taking $A|_{q, \Omega} = \mu|_{q, \Omega} + Z$, and $Z \sim N(0, \Sigma)$ is independent of $\mu$.  One then
 obtains that $E[A] = \mu_{BL} $ and $\Sigma_{BL} = \Sigma + \Sigma_{BL}^{\mu}$ (\cite{MeucciBL}, p. 5). \newline
 Let us now see how these ideas are implemented in the \texttt{BLCOP} package.
-\section{Using the Black-Litterman model in \texttt{BLCOP} }
+\section{Using the Black-Litterman model in BLCOP}
 The implementation of the Black-Litterman model in BLCOP is based on objects that represent views on the market and objects that represent the posterior
 distribution of the market after blending the views.  We will illustrate this with a simple example.  Suppose that an analyst wishes to form views on 6
 stocks, 2 of which are technology stocks and the other 4 of which are from the financial sector.  Intially, she believes that the average of the 2 tech stocks will outperform one of the financial stocks, say $\frac{1}{2}( \textrm{DELL} + \textrm{IBM}) - \textrm{MS} \sim N(0.06,  0.01)$.  
-We will create a \code{BLViews} class object with the \texttt{BLViews} constructor function.  Its arguments are the ``pick'' matrix, a vector of confidences, the vector ``q'', and the the names of the assets in one's ``universe''.  
+We will create a \code{BLViews} class object with the \texttt{BLViews}
+constructor function.  Its arguments are the ``pick'' matrix, a vector of confidences, the vector ``q'', and the the names of the assets in one's ``universe''. Please note that the following examples may require the suggested fPortfolio and mnormt packages.
 \SweaveOpts{keep.source=TRUE}
 <<echo=FALSE,print=FALSE>>=
+require(fPortfolio)
 require(BLCOP)
-require("sn")
+require(mnormt)
 @
 <<echo=TRUE,print=FALSE>>=
 pickMatrix <- matrix(c(1/2, -1, 1/2, rep(0, 3)), nrow = 1, ncol = 6 )
@@ -194,7 +198,7 @@ function of the same name.
 However a significant difference is the use of \code{mvdistribution} and \code{distribution} class objects to specify the prior 
 distribution and 
 view distributions respectively.  We will show the use of these in the following example, which is based on the example used in 
-\cite{MucciCOP}, p.9.  Suppose that we wish to invest in 4 market indices (S\&P500, FTSE, CAC and DAX). Meucci suggests a 
+\cite{MeucciCOP}, p.9.  Suppose that we wish to invest in 4 market indices (S\&P500, FTSE, CAC and DAX). Meucci suggests a 
 multivariate Student-t distribution with $\nu = 5$ degrees of freedom and dispersion matrix given by:
 $$ 10^{-3} \left( \begin{array}{cccc} .376 & .253 & .333 & .397 \\ . &.360 & .360 & .396 \\ . & . & .600 & .578 \\ . & . & . & .775 \end{array} \right).$$
 He then sets $\mu = \delta \Sigma w_{eq} $ where $w_{eq}$ is the relative capitilization

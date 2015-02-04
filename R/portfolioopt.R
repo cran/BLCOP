@@ -22,18 +22,9 @@
 
 
 
-#'  A utility function that calculates "optimal" portfolios with respect to a prior and (Black-Litterman) posterior distribution, 
-#' and then returns the weights and optionally plots them with barplots.  The optimizer is provided by the user, but there is a "toy" 
-#' Markowitz optimizer that is used by default 
-#' @param result BLPosterior result
-#' @param optimizer Function that performs optimization.  Its first argument should be the mean vector, its
-#' second the variance-covariance matrix
-#' @param ... Additional paramters to be passed to the optimizer
-#' @param doPlot Should a barplot be created?
-#' @param beside should the barplot be a side-by-side plot or just a plot of the differences in weights?
-#' @return The weights of the optimal prior and posterior portfolios
-#' @author fgochez <fgochez@mango-solutions.com>
-#' @export
+## A utility function that calculates "optimal" portfolios with respect to a prior and (Black-Litterman) posterior distribution, 
+## and then returns the weights and optionally plots them with barplots. The optimizer is provided by the user, but there is a "toy" 
+## Markowitz optimizer that is used by default. 
 
 optimalPortfolios <- function
 (                                         
@@ -66,18 +57,8 @@ optimalPortfolios <- function
 	return(list(priorPfolioWeights = priorPortfolioWeights, postPfolioWeights = postPortfolioWeights ))    
 }
 
-#' A utility function that calculates "optimal" portfolios with respect to a prior and (Black-Litterman) 
-#' posterior distribution using the functionality of the Rmetrics fPortfolio package, and then returns the weights
-#' @param result BLPosterior result object
-#' @param spec An object of class fPORTFOLIOSPEC containing the portfolio specification
-#' @param constraints A set of portfolio constraints (as required by fPortfolio optimization routines)
-#' @param optimizer Function (or name of a function) that performs portfolio optimization, e.g. "minriskPortfolio"
-#' @param inputData Input data
-#' @param numSimulations Number of simultions
-#' @title Calculate optimal prior and posterior portfolios using fPortfolios
-#' @return A list with 2 elements: the prior and posterior portfolios (of class fPORTFOLIO)
-#' @author fgochez
-#' @export
+## A utility function that calculates "optimal" portfolios with respect to a prior and (Black-Litterman) 
+## posterior distribution using the functionality of the Rmetrics fPortfolio package, and then returns the weights
 
 optimalPortfolios.fPort <- function(result, spec = NULL, constraints = "LongOnly", optimizer = "minriskPortfolio", 
 			inputData = NULL, numSimulations = BLCOPOptions("numSimulations"))
@@ -90,8 +71,7 @@ setGeneric("optimalPortfolios.fPort")
 optimalPortfolios.fPort.BL <- function(result, spec = NULL ,constraints = "LongOnly", optimizer = "minriskPortfolio", 
 		inputData = NULL, numSimulations = BLCOPOptions("numSimulations"))
 {
-	if(!require("fPortfolio"))
-		stop("The package fPortfolio is required to execute this function, but you do not have it installed.")
+#	if(!require("fPortfolio")) stop("The package fPortfolio is required to execute this function, but you do not have it installed.")
 	assets <- assetSet(result@views)
 	# create a "dummy" series that will only be used because the "optimizer" function requires it (but the mean and
 	# covariance will not be calculated using it)
@@ -136,30 +116,20 @@ optimalPortfolios.fPort.BL <- function(result, spec = NULL ,constraints = "LongO
 	x
 }
 
-#' A wrapper function which returns estimates of the prior mean and covariance calculated 
-#' stored in the package environment. It is not intended to be directly run by the user but 
-#' needs to be exported in order to be run by the third party optimizer.
-#' @param x multivariate time series
-#' @param spec optional portfolio specification
-#' @param ... additional arguments
-#' @return A list with 2 elements: the estimators of the prior mean and covariance
-#' @author rchandler-mant
-#' @export
+## A wrapper function which returns estimates of the prior mean and covariance calculated 
+## stored in the package environment. It is not intended to be directly run by the user but 
+## needs to be exported in order to be run by the third party optimizer.
+
 getPriorEstim <- function(x, spec=NULL, ...)
 {
   return(.BLEnv$prior)
 }
 
 
-#' A wrapper function which returns estimates of the posterior mean and covariance calculated 
-#' stored in the package environment. It is not intended to be directly run by the user but 
-#' needs to be exported in order to be run by the third party optimizer.
-#' @param x multivariate time series
-#' @param spec optional portfolio specification
-#' @param ... additional arguments
-#' @return A list with 2 elements: the estimators of the posterior mean and covariance
-#' @author rchandler-mant
-#' @export
+## A wrapper function which returns estimates of the posterior mean and covariance calculated 
+## stored in the package environment. It is not intended to be directly run by the user but 
+## needs to be exported in order to be run by the third party optimizer.
+
 getPosteriorEstim <- function(x, spec=NULL, ...)
 {
   return(.BLEnv$post)
@@ -178,27 +148,14 @@ plot.BLOptimPortfolios <- function(x,...)
 	barplot(plotData, col = c("lightblue"), ylab = "Difference", border = "blue", main = "Differences in weights", horiz = FALSE)	
 }
 
-#' A utility function that calculates "optimal" portfolios with respect to a prior and (COP) 
-#' posterior distribution using the functionality of the Rmetrics fPortfolio package, and then returns the weights
-#' @param result COPPosterior result object
-#' @param spec An object of class fPORTFOLIOSPEC containing the portfolio specification.  For COP optimization, the user
-#' will likely want to use something like a CVaR-type portfolio
-#' @param constraints A set of portfolio constraints (as required by fPortfolio optimization routines)
-#' @param optimizer function (or name of a function) that performs portfolio optimization, e.g. "minriskPortfolio"
-#' @param inputData matrix, data.frame, or timeSeries class object of return data.  If NULL, a series of data
-#' will be simulated using the prior distribution of the COPPosterior object
-#' @param numSimulations  Number of posterior distribution simulations to use for the optimization.  Large numbers may cause out-of memory
-#' errors or might take very long
-#' @return A list with 2 elements: the prior and posterior portfolios (of class fPORTFOLIO)
-#' @author Francisco
-#' @export
+## A utility function that calculates "optimal" portfolios with respect to a prior and (COP) 
+## posterior distribution using the functionality of the Rmetrics fPortfolio package, and then returns the weights
 
 optimalPortfolios.fPort.COP <- function(result, spec = NULL, constraints = "LongOnly", optimizer = "minriskPortfolio",
 			inputData = NULL, numSimulations = BLCOPOptions("numSimulations"))
 {
 
-	if(!require("fPortfolio"))
-		stop("The package fPortfolio is required to execute this function, but you do not have it installed.")
+#	if(!require("fPortfolio")) stop("The package fPortfolio is required to execute this function, but you do not have it installed.")
 	if(is.null(inputData))
 	{
 		# no input time series provided, so simulate the asset returns
@@ -213,7 +170,7 @@ optimalPortfolios.fPort.COP <- function(result, spec = NULL, constraints = "Long
 		spec <- portfolioSpec()
 		setType(spec) <- "CVAR"
 		setWeights(spec) <- rep(1 / numAssets, times = numAssets)
-		setSolver(spec) <- "solveRglpk"
+		setSolver(spec) <- "solveRglpk.CVAR"
 	}
 	# the "output" series data for the CVaR optimization will be taken from the simulations
 	outData <- tail(posteriorSimulations(result), numSimulations)

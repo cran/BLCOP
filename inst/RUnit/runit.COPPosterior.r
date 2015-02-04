@@ -1,10 +1,11 @@
-test.COPPosterior <- function()
-{
-    if(!require("sn", quiet = TRUE))
+test.COPPosterior <- function() {
+	
+	if(!require("mnormt", quiet = TRUE))
 	{
-		warning("This test relies on the sn package which is not available \n")
+		warning("This test relies on the mnormt package which is not available \n")
 		return()
 	}
+	
 	NUMTESTSIMULATIONS <- 1000
     .unitTestPath <- BLCOPOptions("unitTestPath")
     testEnvironment <- new.env()
@@ -23,20 +24,21 @@ test.COPPosterior <- function()
     assign(tmp, value = get(tmp), envir = testEnvironment)
     set.seed(3)
     posterior <- COPPosterior(marketDistribution, views, numSimulations = NUMTESTSIMULATIONS)
-    # TODO: check why this is not exactly equal
-    checkEquals(posterior@posteriorSims, testEnvironment$posteriorSims, tol = 1.5)
+    
+    checkEquals(posterior@posteriorSims, testEnvironment$posteriorSims, tolerance=1.5)
 	
 	checkEquals(colnames(posterior@posteriorSims), assetSet(views))
 	rm(testEnvironment)
 }
 
-test.COPPosteriorExtractors <- function()
-{
-	if(!require("sn", quiet = TRUE))
+test.COPPosteriorExtractors <- function() {
+	
+	if(!require("mnormt", quiet = TRUE))
 	{
-		warning("This test relies on the sn package which is not available \n")
+		warning("This test relies on the mnormt package which is not available \n")
 		return()
 	}
+	
 	NUMTESTSIMULATIONS <- 1000
 	dispersion <- c(.376,.253,.360,.333,.360,.600,.397,.396,.578,.775) / 1000
 	sigma <- BLCOP:::.symmetricMatrix(dispersion, dim = 4)
@@ -49,6 +51,7 @@ test.COPPosteriorExtractors <- function()
 	vdist <- list(distribution("unif", min = -0.02, max = 0))
 	
 	views <- COPViews(pick, vdist, 0.2, c("SP", "FTSE", "CAC", "DAX"))
+	
 	# test posterior extractor functions
 	posterior <- COPPosterior(marketDistribution, views, numSimulations = NUMTESTSIMULATIONS)
 	checkEquals(posteriorSimulations(posterior), posterior@posteriorSims)

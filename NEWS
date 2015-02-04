@@ -1,3 +1,13 @@
+New in version 0.3.1:
+- No new functionality was added. Vignette document updated. 
+
+New in version 0.3.0:
+- No new functionality was added.  The code of optimalPortfolios.fPort is updated according to the 
+  latest fPortfolio package. All failing unittests are fixed.
+
+New in version 0.2.9:
+- No new functionality was added.  Documentation updated to account for changes to the package sn.
+
 New in version 0.2.8:
 - No new functionality was added.  RUnit tests updated to correctly pass sn distribution parameters.
 
