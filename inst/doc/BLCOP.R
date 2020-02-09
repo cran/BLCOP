@@ -3,9 +3,9 @@
 ###################################################
 ### code chunk number 1: BLCOP.Rnw:76-79
 ###################################################
-require(fPortfolio)
-require(BLCOP)
-require(mnormt)
+library(fPortfolio)
+library(BLCOP)
+library(mnormt)
 
 
 ###################################################
@@ -21,7 +21,7 @@ views
 ### code chunk number 3: BLCOP.Rnw:90-92
 ###################################################
 priorMeans <- rep(0, 6)
-priorVarcov <- cov.mve(monthlyReturns)$cov
+priorVarcov <- MASS::cov.mve(monthlyReturns)$cov
 
 
 ###################################################
