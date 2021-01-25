@@ -1,6 +1,7 @@
-232df32e639e033394917c1a9b33743f *DESCRIPTION
+e4cd9791f190429ad7377cc55bce5e49 *DESCRIPTION
+130dc85720d9e82e0b2f57c51ccacf62 *LICENSE
 50ba793d168d63dd343e75be032f2c5f *NAMESPACE
-01b2078a928819a5015cfbd005a99417 *NEWS
+cdb49a80d3b1a8970898d0ff61ca62ba *NEWS
 c7ae487de99bdf3e81014ec4bc88e3c8 *R/BLAnalyzePost.r
 0d1844cbd27dc817e50f8ab886a9e843 *R/BLGUI.r
 13d51456e2a2f27d6f960898e5a38f27 *R/BLOptions.R
@@ -11,7 +12,7 @@ a0e952d5a90d9e64e83644a1b26b115d *R/COPPosterior.r
 a1c267c64ba579f9e28fd7f8263fd5c5 *R/COPUI.r
 ee5787899c06db4b3f641b3a34d51036 *R/calcalphas.r
 7d03146889304d17ccfe225502aa86c4 *R/classesmethods.r
-a9cb9eeddd1aaaecf6b0b4311ef4a35f *R/constructors.r
+636fe2ea929f194ca824a703be86acd0 *R/constructors.r
 9cadad6a27b8ce22dc5dd6691fca5bb4 *R/deleteViews.r
 6e68c8ec975f0f592783ba5b27aec9f0 *R/densityPlots.r
 3d4b0c76ea5f7579e302e8b75b729204 *R/extractreplace.r
@@ -22,7 +23,8 @@ a9cb9eeddd1aaaecf6b0b4311ef4a35f *R/constructors.r
 b098f7b8839eb728d63aab045d2b03fb *R/unittests.r
 e773779d306e7a4a85e5400936d520f1 *R/utils.R
 e83cee186e6ee894b37475d554f8b033 *R/zzz.r
-d5f0985dbb4c369d558cc8fc0af085f3 *build/vignette.rds
+01b472f6d5c2066d990d81787e444b13 *README.md
+c5cab7fe3735aea6aa44d7eb48d77619 *build/vignette.rds
 85a7b75b3f45bb789d9c5072a9da5d52 *data/US13wTB.RData
 a8432aa266bd56f24f38dc6bc8155ae6 *data/monthlyreturns.RData
 0aea569c8f2f2599ed2138b78caccf94 *data/sp500Returns.RData
@@ -42,9 +44,13 @@ d285a8ce7054fc61cf3c070c00cd22d7 *inst/RUnit/runit.deleteviews.r
 9da95637a21df8cd7227b5c74a891cdc *inst/RUnit/runit.portfolioopt.R
 5f9f5a98ea8d69364abebeb38c9c24b3 *inst/RUnit/runit.showmethods.R
 4d3f29665da708e1b2dd3731eb0cfcb8 *inst/RUnit/testseed.RData
-8d2f1d23a9b303703cc77d840fd24c05 *inst/doc/BLCOP.R
-1439935b0f8a2a4604d3789e21be4bd8 *inst/doc/BLCOP.Rnw
-14d5ef73152ea32cde01742846705582 *inst/doc/BLCOP.pdf
+d68b76891cd2ce8743d653a50a992194 *inst/artifacts/BLCOP.R
+550244b90c979b8d612849f6f7f83425 *inst/artifacts/BLCOP.Rnw
+71053213c11d3d515cd7a3cadfa72c06 *inst/artifacts/BLCOP.pdf
+fe180aa4acf8552379169198ea4e5cc2 *inst/artifacts/BlackLitterman.pdf
+2c49bff3c19909fa611c5beb2952cf6f *inst/doc/BLCOP.R
+3f55d257a8fba5d46298416b063988e3 *inst/doc/BLCOP.Rmd
+7abc24177b65cf8ae31d528cd2fe7c25 *inst/doc/BLCOP.html
 4b4fa27c90cbb090bbe76cb91aea7308 *man/BLCOPOptions.Rd
 d4c05601b97da7ab3eebc46c403acbf4 *man/BLPosterior.Rd
 e74dedf4492fbeed436d373f2fbee2e1 *man/BLResult-class.Rd
@@ -71,4 +77,5 @@ e407027a8a686e5ce7a4cbaf84832b6b *man/posteriorEst.Rd
 fd98a3cbc124b661065ed4817c4e2325 *man/runBLCOPTestSuite.Rd
 97127b40b6745362fbd6e44f366c3adb *man/sampleFrom.Rd
 97ed12afa6c1e0a43989b8852f3f8750 *man/sp500Returns.Rd
-1439935b0f8a2a4604d3789e21be4bd8 *vignettes/BLCOP.Rnw
+3f55d257a8fba5d46298416b063988e3 *vignettes/BLCOP.Rmd
+64e0ae3ed9bb7ffac7438e1d47b05961 *vignettes/references.bib
